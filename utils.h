@@ -9,6 +9,7 @@
 #include <random>
 #include <vector>
 #include <algorithm>
+#include <SDL_mixer.h>
 class Textmanage {
 private:
 public:
@@ -37,12 +38,17 @@ public:
 	~File();
 	static std::string Path(std::string path);
 	static void readFile(std::string path , std::string& data , std::string& data1, std::string& data2, std::string& data3 );
-	static void readFile2(std::string path, std::string& data , std::string& data1);
+	static void readFile2(std::string path, std::function<void(const std::string&)> Data);
 	static void readFile3(std::string path, std::function<void(const std::string&)> Data);
-	static void readFile4(std::string path, std::string& data, std::string& data1, std::string& data2, std::string& data3, std::string& data4 );
+	static void readFile4(std::string path, std::function<void(const std::string&, const std::string&, const std::string&, const std::string&)> Callback);
+	static void readFile5(std::string path, std::string& data, std::string& data1, std::string& data2, std::string& data3 , std::string& data4);
 	//static void readFile(std::string path, std::string& datat);
 	//static void writeFile(std::string path, nlohmann::json& jsondata);
 };
+namespace mixer {
+	Mix_Music* loadMusic(const std::string& filePath); //tai file nhac
+	Mix_Chunk* loadChunk(const std::string& filePath); //tai file am thanh
+}
 namespace global {
 	extern GameState gamestate;
 }
