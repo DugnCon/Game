@@ -60,17 +60,27 @@ void File::readFile(std::string path, std::string& jsonData1, std::string& jsonD
 	}
 	in.close();
 }
-void File::readFile2(std::string path, std::string& jsonData1 , std::string& jsonData2) {
+void File::readFile2(std::string path, std::function<void(const std::string&)> Data) {
 	std::ifstream in(path);
 	if (!in.is_open()) {
 		std::cout << "Cannot open file \n";
 	}
 	else {
-		std::getline(in, jsonData1);
-		std::getline(in, jsonData2);
+		std::string jsonData;
+		std::vector<std::string> lines;
+		while (std::getline(in, jsonData)) {
+			lines.push_back(jsonData);
+		}
 		in.close();
+		//std::random_device rd;
+		//std::mt19937 gen(rd());
+		//std::shuffle(lines.begin(), lines.end(), gen);
+		for (const std::string& line : lines) {
+			Data(line);
+		}
 	}
 }
+
 void File::readFile3(std::string path, std::function<void(const std::string&)> Data) {
 	std::ifstream in(path);
 	if (!in.is_open()) {
@@ -93,7 +103,23 @@ void File::readFile3(std::string path, std::function<void(const std::string&)> D
 	}
 	//in.close();
 }
-void File::readFile4(std::string path, std::string& jsonData1, std::string& jsonData2, std::string& jsonData3, std::string& jsonData4 , std::string& jsonData5) {
+void File::readFile4(std::string path, std::function<void(const std::string&, const std::string&, const std::string&, const std::string&)> Data) {
+	std::ifstream in(path);
+	if (!in.is_open()) {
+		std::cout << "Cannot open file \n";
+	}
+	else {
+		std::string ans1, ans2, ans3, ans4;
+		while (std::getline(in, ans1)) {
+			std::getline(in, ans2);
+			std::getline(in, ans3);
+			std::getline(in, ans4);
+			Data(ans1, ans2, ans3, ans4);
+		}
+		in.close();
+	}
+}
+void File::readFile5(std::string path, std::string& jsonData1, std::string& jsonData2, std::string& jsonData3, std::string& jsonData4 , std::string& jsonData5) {
 	std::ifstream in(path);
 	if (!in.is_open()) {
 		std::cout << "Cannot open file \n";
@@ -104,8 +130,9 @@ void File::readFile4(std::string path, std::string& jsonData1, std::string& json
 		std::getline(in, jsonData3);
 		std::getline(in, jsonData4);
 		std::getline(in, jsonData5);
-		in.close();
+		//in.close();
 	}
-	//in.close();
+	in.close();
 }
+
 GameState global::gamestate = MENU;
